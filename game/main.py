@@ -1,9 +1,9 @@
 import inquirer
 import random
 
-# creates 'Player' class which handles all important information about the player
-class Player:
-    def __init__(self, name, health, mana, strength, defence, damage, level, ch_class, inventory):
+# define Character class
+class Character:
+    def __init__(self, name, health, mana, strength, defence, damage, level, character_class, inventory):
         self.name = name
         self.health = health
         self.mana = mana
@@ -11,10 +11,10 @@ class Player:
         self.defence = defence
         self.damage = damage
         self.level = level
-        self.ch_class = ch_class
+        self.character_class = character_class
         self.inventory = inventory
 
-# creates an function asking for name on the beginning of each session
+# function which asks for the Player's name
 def ask_name():
     while True:
         creation = [
@@ -30,7 +30,7 @@ def ask_name():
         else: # if user is dumb enough to imput something not expected print this >-<
             print('There was an error with validating inputed information.')
 
-# creates an function asking for class on the beginning of each session
+# function which lets the user choose a character class and return the corresponding stats
 def choose_class():
     options = [
         'Barbarian',
@@ -61,21 +61,27 @@ def choose_class():
         print('There was an error with validating chosen class.')
         return None, None
 
-# assigns 'name' that has been imputed by the player to variable called name
-name = ask_name()['name']
-chosen_stats, chosen_class = choose_class()
+# function which creates new character using the user's imput for name and class
+def create_character():
+    name = ask_name()['name']
+    character_stats, character_class = choose_class()
+    character = Character(
+        name=name,
+        health=character_stats['health'],
+        mana=character_stats['mana'],
+        strength=character_stats['strength'],
+        defence=character_stats['defence'],
+        damage=character_stats['damage'],
+        level=1,
+        character_class=character_class,
+        inventory=[])
+    return character
 
-if chosen_stats is not None:
-    # assigns all base stats to player based on the chosen class
-    player = Player(name, chosen_stats['health'], chosen_stats['mana'], chosen_stats['strength'], chosen_stats['defence'], chosen_stats['damage'], 1, chosen_class, [])
-    print(f"Name: {player.name}")
-    print(f"Health: {player.health}")
-    print(f"Mana: {player.mana}")
-    print(f"Strength: {player.strength}")
-    print(f"Defence: {player.defence}")
-    print(f"Damage: {player.damage}")
-    print(f"Level: {player.level}")
-    print(f"Class: {player.ch_class}")
-    print(f"Inventory: {player.inventory}")
+# main function which runs the character creation process
+def main():
+    character = create_character()
+    print(f"Welcome, {character.name} the {character.character_class}!")
 
-print(f"Welcome, {player.name}! You'll be playing as {chosen_class}")
+# run the main function when the script is executed
+if __name__ == "__main__":
+    main()
